@@ -1,6 +1,7 @@
 package spring_web_api.repository;
 
 import org.springframework.stereotype.Repository;
+import spring_web_api.handler.RequiredFieldException;
 import spring_web_api.model.User;
 
 import java.util.ArrayList;
@@ -10,6 +11,9 @@ import java.util.List;
 public class UserRepository {
 
     public void save(User user){
+        if (user.getLogin() == null) throw new RequiredFieldException("login");
+        if (user.getPassword() == null) throw new RequiredFieldException("password");
+
         if (user.getId() == null){
             System.out.println("SAVE - Recebendo o usuário na camada de repositório");
         } else {
