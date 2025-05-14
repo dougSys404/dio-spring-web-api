@@ -1,9 +1,20 @@
 package spring_web_api.model;
 
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "user_tb")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "login", nullable = false)
     private String login;
+
+    @Column(name = "password", nullable = false)
     private String password;
 
     public User(){}

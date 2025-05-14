@@ -3,7 +3,8 @@ package spring_web_api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring_web_api.model.User;
-import spring_web_api.repository.UserRepository;
+import spring_web_api.repository.UserRepository_old;
+import spring_web_api.service.UserService;
 
 import java.util.List;
 
@@ -11,37 +12,38 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserRepository repository;
+    private UserService service;
+
+    public UserController(UserService service){this.service = service;}
 
     @GetMapping
     public List<User> getUsers(){
-        return repository.findAll();
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public User getById(Integer id){
-        return repository.findById(id);
+    public User getById(@PathVariable Integer id){
+        return service.findById(id);
     }
 
-    @GetMapping("/username/{username}")
-    public User findByUsername(@PathVariable("username") String username){
+    @GetMapping("/logins/{login}")
+    public User findByLogin(@PathVariable String login){
 
-        return repository.findByUsername(username);
+        return service.findByUsername(login);
     }
 
     @PostMapping
     public void create(@RequestBody User user){
-        repository.save(user);
+        service.create(user);
     }
 
-    @PutMapping
-    public void update(@RequestBody User user){
-        repository.save(user);
+    @PutMapping("/{id}")
+    public void update(@PathVariable Integer id, @RequestBody User user){
+        service.replace(id, user);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id){
-        repository.deleteById(id);
+        service.delete(id);
     }
 }
